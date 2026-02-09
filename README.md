@@ -1,51 +1,77 @@
-Qué hace
-	•	Formulario para votar: nombre, email, país.
-	•	Tabla “Top 10 Most Voted Countries” con buscador por país, capital, región o subregión.
-	•	Refresca la tabla después de registrar un voto.
+# CountryVote Frontend
 
-Tecnologías
-	•	Angular (standalone components)
-	•	Bootstrap (estilos)
-	•	HttpClient (consumo de API)
+Aplicación frontend para el reto **CountryVote**.  
+Permite a los usuarios votar por su país favorito y visualizar el Top 10 de países más votados.
 
-Cómo instalar y ejecutar
+---
 
-Requisitos:
-	•	Node.js (LTS recomendado)
-	•	npm
+## Funcionalidad
 
-Instalación:
-- npm install
+- Formulario para votar por un país:
+  - Nombre
+  - Email (único por voto)
+  - País
+- Tabla **Top 10 Most Voted Countries**
+  - Muestra país, capital, región, subregión y número de votos
+  - Buscador por país, capital, región o subregión
+- La tabla se refresca después de registrar un voto
 
-Ejecución:
-- ng serve --proxy-config proxy.conf.json
+---
 
-La app queda disponible en:
-	•	http://localhost:4200
+## Tecnologías
+
+- Angular (standalone components)
+- Bootstrap (estilos)
+- HttpClient (consumo de API REST)
+
+---
+
+## Requisitos
+
+- Node.js (LTS recomendado)
+- npm
+- Angular CLI
+
+---
+
+## Instalación
+
+```bash
+npm install
+
+Ejecución
+ng serve --proxy-config proxy.conf.json
+
+La aplicación queda disponible en: http://localhost:4200
 
 Configuración de API
+El frontend consume el backend a través del prefijo:
+/api
+En desarrollo se utiliza un proxy para redirigir las llamadas a:
+http://localhost:8080
 
-El frontend consume el backend vía /api/....
-En desarrollo normalmente se usa un proxy (o configuración equivalente) para que /api apunte a http://localhost:8080.
+Esto evita problemas de CORS y mantiene desacoplado el frontend del backend.
 
-Decisiones de diseño (y cómo cumplen requisitos)
-	•	Separación en componentes:
-	•	VoteForm: registra el voto y notifica al padre cuando se crea un voto.
-	•	TopTable: carga y muestra el Top 10, y permite filtrar.
-	•	Servicio central de API:
-	•	CountryvoteApiService encapsula llamadas HTTP (countries, votes, top10).
-	•	Validaciones:
-	•	Reactive Forms para validar inputs (requeridos, email válido).
-Compromisos por tiempo
-	•	El refresco de la tabla y el rendering pueden requerir ajustes finos de change detection (especialmente en SSR/hydration).
-	•	Manejo de errores: hay casos donde el backend retorna error pero falta mapear el mensaje exacto al usuario en UI.
-	•	No se añadieron pruebas unitarias/e2e por limitación de tiempo (se priorizó funcionalidad y demo).
-	•	Se mantuvo el estilo simple con Bootstrap, evitando sobre-optimizar UI.
+⸻
 
-Cómo probar rápido (end-to-end)
-	1.	Levantar backend (puerto 8080).
-	2.	Levantar frontend (puerto 4200).
-	3.	Abrir http://localhost:4200.
-	4.	Registrar un voto con email nuevo.
-	5.	Verificar que el Top 10 se actualice.
-	6.	Intentar votar con el mismo email y validar que el sistema rechaza el voto.
+Decisiones de diseño
+
+Separación en componentes
+	•	VoteForm
+	•	Maneja el formulario de votación
+	•	Valida los campos con Reactive Forms
+	•	Emite un evento cuando un voto es registrado correctamente
+	•	TopTable
+	•	Carga y muestra el Top 10 de países más votados
+	•	Permite filtrar los resultados desde la UI
+
+Servicio central de API
+	•	CountryvoteApiService
+	•	Centraliza todas las llamadas HTTP
+	•	Facilita mantenimiento y pruebas
+	•	Encapsula endpoints de países, votos y top 10
+
+Validaciones
+	•	Se usan Reactive Forms
+	•	Validaciones de campos requeridos y formato de email
+	•	Se evita el envío de votos inválidos desde la UI
