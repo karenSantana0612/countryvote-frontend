@@ -1,0 +1,48 @@
+<div class="card shadow-sm border-0 rounded-4 p-3 mb-4">
+  <div class="fw-bold mb-3">Vote your Favourite Country</div>
+
+  <div *ngIf="successMsg" class="alert alert-success rounded-3 d-flex align-items-center gap-2">
+    <span class="badge bg-success rounded-pill">✓</span>
+    <span>{{ successMsg }}</span>
+  </div>
+
+  <div *ngIf="errorMsg" class="alert alert-danger rounded-3">
+    {{ errorMsg }}
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row g-3 align-items-start">
+      <div class="col-md-4">
+        <input class="form-control form-control-lg rounded-3" placeholder="Name" formControlName="name"
+          [class.is-invalid]="f['name'].touched && f['name'].invalid" />
+        <div class="invalid-feedback">Name is required</div>
+      </div>
+
+      <div class="col-md-4">
+        <input class="form-control form-control-lg rounded-3" placeholder="Email" formControlName="email"
+          [class.is-invalid]="f['email'].touched && f['email'].invalid" />
+        <div class="invalid-feedback">Invalid email</div>
+      </div>
+
+      <div class="col-md-2">
+        <select class="form-select form-select-lg rounded-3" formControlName="countryCode" [disabled]="loadingCountries"
+          [class.is-invalid]="f['countryCode'].touched && f['countryCode'].invalid">
+          <option value="">
+            {{ loadingCountries ? 'Loading...' : 'Country' }}
+          </option>
+          <option *ngFor="let c of countries" [value]="c.code">
+            {{ c.name }}
+          </option>
+        </select>
+        <div class="invalid-feedback">Country is required</div>
+      </div>
+
+      <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-dark btn-lg rounded-3 w-10 text-nowrap" 
+        [disabled]="form.invalid || submitting">
+          {{ submitting ? '...' : 'Submit Vote' }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

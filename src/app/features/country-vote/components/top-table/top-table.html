@@ -1,0 +1,46 @@
+<h1 class="display-5 fw-bold mb-3">Top 10 Most Voted Countries</h1>
+
+<div class="input-group input-group-lg mb-3" style="max-width: 520px;">
+  <input class="form-control border-start-0 rounded-end-3"
+    placeholder="Search Country, Capital City, Region or Subregion" [(ngModel)]="q" (ngModelChange)="applyFilter()" />
+</div>
+
+<div class="card shadow-sm border-0 rounded-4 p-2">
+  <div class="table-responsive">
+    <table class="table table-borderless align-middle mb-0">
+      <thead>
+        <tr class="text-secondary">
+          <th>Country</th>
+          <th>Capital City</th>
+          <th>Region</th>
+          <th>Sub Region</th>
+          <th class="text-end">Votes</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @if (loading) {
+        <tr>
+          <td colspan="5" class="text-center text-secondary py-4">Loading...</td>
+        </tr>
+        } @else {
+        @if (filtered.length === 0) {
+        <tr>
+          <td colspan="5" class="text-center text-secondary py-4">No results</td>
+        </tr>
+        } @else {
+        @for (r of filtered; track r.code) {
+        <tr>
+          <td class="fw-semibold">{{ r.name }}</td>
+          <td>{{ r.capital }}</td>
+          <td>{{ r.region }}</td>
+          <td>{{ r.subregion }}</td>
+          <td class="text-end fw-semibold">{{ r.votes }}</td>
+        </tr>
+        }
+        }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
